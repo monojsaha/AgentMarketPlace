@@ -1,0 +1,9 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "base-api"
+resolve_s3 = true
+s3_prefix = "base-api"
+region = "ap-south-1"
+profile = "mks-dev"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Agent API with dummy token authorizer
+
+Resources:
+  AgentApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Auth:
+        DefaultAuthorizer: DummyTokenAuthorizer
+        Authorizers:
+          DummyTokenAuthorizer:
+            FunctionArn: !GetAtt DummyAuthorizerFunction.Arn
+            Identity:
+              Headers:
+                - Authorization
+
+  AgentApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/app.lambda_handler
+      Runtime: python3.13
+      Events:
+        ListAgents:
+          Type: Api
+          Properties:
+            Path: /agents
+            Method: GET
+            RestApiId: !Ref AgentApi
+        GetAgent:
+          Type: Api
+          Properties:
+            Path: /agents/{id}
+            Method: GET
+            RestApiId: !Ref AgentApi
+
+  DummyAuthorizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: src/auth.lambda_handler
+      Runtime: python3.13
+      Environment:
+        Variables:
+          DUMMY_TOKEN: dummy-token
+
+Outputs:
+  ApiUrl:
+    Description: "API endpoint URL"
+    Value: !Sub "https://${AgentApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
