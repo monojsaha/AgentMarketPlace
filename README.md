@@ -1,7 +1,7 @@
 # Agent API
 
-This repository contains a minimal serverless REST API built with AWS SAM. The
-API exposes two endpoints to list agents and retrieve a specific agent by id.
+This repository contains a small serverless REST API built with AWS SAM. The
+API now provides basic CRUD operations on agents stored in DynamoDB.
 A custom Lambda authorizer checks a dummy token before allowing access.
 
 ## Deployment
@@ -26,8 +26,14 @@ A custom Lambda authorizer checks a dummy token before allowing access.
 Send HTTP requests to the API endpoint using a tool like Postman. Include the
 header `Authorization: dummy-token` in each request.
 
-- `GET /agents` – list all agents
+Available endpoints:
+
+- `GET /agents` – list all agents (optional `?category=` filter)
 - `GET /agents/{id}` – retrieve a single agent
+- `POST /agents` – create a new agent
+- `PUT /agents/{id}` – update an existing agent
+- `DELETE /agents/{id}` – delete an agent
+- `POST /agents/{id}/run` – run an agent (placeholder)
 
 Example using `curl`:
 

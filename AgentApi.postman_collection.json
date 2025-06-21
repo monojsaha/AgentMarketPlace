@@ -1,0 +1,95 @@
+{
+  "info": {
+    "name": "Agent API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List Agents",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "url": {
+          "raw": "{{base_url}}/agents",
+          "host": ["{{base_url}}"],
+          "path": ["agents"],
+          "query": []
+        }
+      }
+    },
+    {
+      "name": "Get Agent",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "url": {
+          "raw": "{{base_url}}/agents/{{id}}",
+          "host": ["{{base_url}}"],
+          "path": ["agents", "{{id}}"]
+        }
+      }
+    },
+    {
+      "name": "Create Agent",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Authorization", "value": "dummy-token"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Example\",\n  \"category\": \"test\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/agents",
+          "host": ["{{base_url}}"],
+          "path": ["agents"]
+        }
+      }
+    },
+    {
+      "name": "Update Agent",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {"key": "Authorization", "value": "dummy-token"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"description\": \"Updated\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/agents/{{id}}",
+          "host": ["{{base_url}}"],
+          "path": ["agents", "{{id}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete Agent",
+      "request": {
+        "method": "DELETE",
+        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "url": {
+          "raw": "{{base_url}}/agents/{{id}}",
+          "host": ["{{base_url}}"],
+          "path": ["agents", "{{id}}"]
+        }
+      }
+    },
+    {
+      "name": "Run Agent",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "url": {
+          "raw": "{{base_url}}/agents/{{id}}/run",
+          "host": ["{{base_url}}"],
+          "path": ["agents", "{{id}}", "run"]
+        }
+      }
+    }
+  ]
+}

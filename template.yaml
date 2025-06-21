@@ -22,6 +22,12 @@ Resources:
       CodeUri: .
       Handler: src/app.lambda_handler
       Runtime: python3.13
+      Environment:
+        Variables:
+          AGENTS_TABLE: !Ref AgentsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AgentsTable
       Events:
         ListAgents:
           Type: Api
@@ -35,6 +41,30 @@ Resources:
             Path: /agents/{id}
             Method: GET
             RestApiId: !Ref AgentApi
+        CreateAgent:
+          Type: Api
+          Properties:
+            Path: /agents
+            Method: POST
+            RestApiId: !Ref AgentApi
+        UpdateAgent:
+          Type: Api
+          Properties:
+            Path: /agents/{id}
+            Method: PUT
+            RestApiId: !Ref AgentApi
+        DeleteAgent:
+          Type: Api
+          Properties:
+            Path: /agents/{id}
+            Method: DELETE
+            RestApiId: !Ref AgentApi
+        RunAgent:
+          Type: Api
+          Properties:
+            Path: /agents/{id}/run
+            Method: POST
+            RestApiId: !Ref AgentApi
 
   DummyAuthorizerFunction:
     Type: AWS::Serverless::Function
@@ -45,6 +75,26 @@ Resources:
       Environment:
         Variables:
           DUMMY_TOKEN: dummy-token
+
+  AgentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: category
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: CategoryIndex
+          KeySchema:
+            - AttributeName: category
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
 
 Outputs:
   ApiUrl:
