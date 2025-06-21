@@ -27,4 +27,4 @@ API_URL=$(aws cloudformation describe-stacks \
   --profile "$AWS_PROFILE")
 
 printf '\nDeployed API URL: %s\n' "$API_URL"
-printf 'Example request:\n  curl -H "Authorization: dummy-token" %s/agents\n' "$API_URL"
+printf 'Example request:\n  curl -H "Authorization: Bearer <jwt-token>" %s/agents\n' "$API_URL"

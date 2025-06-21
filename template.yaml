@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Agent API with dummy token authorizer
+Description: Agent API secured with Amazon Cognito
 
 Resources:
   AgentApi:
@@ -8,13 +8,12 @@ Resources:
     Properties:
       StageName: prod
       Auth:
-        DefaultAuthorizer: DummyTokenAuthorizer
+        DefaultAuthorizer: CognitoAuthorizer
         Authorizers:
-          DummyTokenAuthorizer:
-            FunctionArn: !GetAtt DummyAuthorizerFunction.Arn
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt AuthUserPool.Arn
             Identity:
-              Headers:
-                - Authorization
+              Header: Authorization
 
   AgentApiFunction:
     Type: AWS::Serverless::Function
@@ -66,15 +65,18 @@ Resources:
             Method: POST
             RestApiId: !Ref AgentApi
 
-  DummyAuthorizerFunction:
-    Type: AWS::Serverless::Function
+  AuthUserPool:
+    Type: AWS::Cognito::UserPool
     Properties:
-      CodeUri: .
-      Handler: src/auth.lambda_handler
-      Runtime: python3.13
-      Environment:
-        Variables:
-          DUMMY_TOKEN: dummy-token
+      UserPoolName: !Sub '${AWS::StackName}-user-pool'
+      AutoVerifiedAttributes:
+        - email
+
+  AuthUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref AuthUserPool
+      GenerateSecret: false
 
   AgentsTable:
     Type: AWS::DynamoDB::Table
@@ -100,3 +102,9 @@ Outputs:
   ApiUrl:
     Description: "API endpoint URL"
     Value: !Sub "https://${AgentApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+  UserPoolId:
+    Description: "Cognito User Pool ID"
+    Value: !Ref AuthUserPool
+  UserPoolClientId:
+    Description: "User Pool Client ID"
+    Value: !Ref AuthUserPoolClient

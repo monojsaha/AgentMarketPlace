@@ -2,7 +2,11 @@
 
 This repository contains a small serverless REST API built with AWS SAM. The
 API now provides basic CRUD operations on agents stored in DynamoDB.
-A custom Lambda authorizer checks a dummy token before allowing access.
+Authentication is handled by an Amazon Cognito user pool instead of the
+previous dummy token authorizer.
+
+After deployment the stack outputs the user pool and client IDs. Use these
+in your front-end application to sign up users and obtain JWT tokens.
 
 ## Deployment
 
@@ -19,12 +23,12 @@ A custom Lambda authorizer checks a dummy token before allowing access.
    ./deploy.sh my-stack myprofile us-east-1
    ```
 
-   If you prefer to deploy manually, run `sam build` followed by `sam deploy --guided` and note the `ApiUrl` output.
+   If you prefer to deploy manually, run `sam build` followed by `sam deploy --guided` and note the `ApiUrl`, `UserPoolId` and `UserPoolClientId` outputs.
 
 ## Usage
 
 Send HTTP requests to the API endpoint using a tool like Postman. Include the
-header `Authorization: dummy-token` in each request.
+`Authorization` header with a valid Cognito JWT access token.
 
 Available endpoints:
 
@@ -38,7 +42,7 @@ Available endpoints:
 Example using `curl`:
 
 ```bash
-curl -H "Authorization: dummy-token" $API_URL/agents
+curl -H "Authorization: Bearer <jwt-token>" $API_URL/agents
 ```
 
 ## Local Testing
@@ -49,11 +53,11 @@ You can run the API locally with SAM:
 sam local start-api
 ```
 
-Then issue requests to `http://127.0.0.1:3000/agents` with the same
-`Authorization` header.
+Then issue requests to `http://127.0.0.1:3000/agents` with a valid JWT token in
+the `Authorization` header.
 
 ## Project Structure
 
 - `src/app.py` – Lambda handler for the API
-- `src/auth.py` – Dummy token authorizer
+- `src/auth.py` – Dummy authorizer (unused)
 - `template.yaml` – SAM template defining resources
