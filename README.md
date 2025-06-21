@@ -56,6 +56,17 @@ sam local start-api
 Then issue requests to `http://127.0.0.1:3000/agents` with a valid JWT token in
 the `Authorization` header.
 
+## Postman Collection
+
+The repository includes `AgentApi.postman_collection.json`. Import this file
+into Postman and create an environment with the following variables:
+
+- `base_url` – the deployed API endpoint
+- `jwt_token` – a valid Cognito access token
+
+Select the environment before sending requests. The collection can also be run
+from the command line using [newman](https://github.com/postmanlabs/newman).
+
 ## Project Structure
 
 - `src/app.py` – Lambda handler for the API

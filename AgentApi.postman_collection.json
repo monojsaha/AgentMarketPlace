@@ -8,7 +8,7 @@
       "name": "List Agents",
       "request": {
         "method": "GET",
-        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "header": [{"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
         "url": {
           "raw": "{{base_url}}/agents",
           "host": ["{{base_url}}"],
@@ -21,7 +21,7 @@
       "name": "Get Agent",
       "request": {
         "method": "GET",
-        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "header": [{"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
         "url": {
           "raw": "{{base_url}}/agents/{{id}}",
           "host": ["{{base_url}}"],
@@ -34,7 +34,7 @@
       "request": {
         "method": "POST",
         "header": [
-          {"key": "Authorization", "value": "dummy-token"},
+          {"key": "Authorization", "value": "Bearer {{jwt_token}}"},
           {"key": "Content-Type", "value": "application/json"}
         ],
         "body": {
@@ -53,7 +53,7 @@
       "request": {
         "method": "PUT",
         "header": [
-          {"key": "Authorization", "value": "dummy-token"},
+          {"key": "Authorization", "value": "Bearer {{jwt_token}}"},
           {"key": "Content-Type", "value": "application/json"}
         ],
         "body": {
@@ -71,7 +71,7 @@
       "name": "Delete Agent",
       "request": {
         "method": "DELETE",
-        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "header": [{"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
         "url": {
           "raw": "{{base_url}}/agents/{{id}}",
           "host": ["{{base_url}}"],
@@ -83,7 +83,7 @@
       "name": "Run Agent",
       "request": {
         "method": "POST",
-        "header": [{"key": "Authorization", "value": "dummy-token"}],
+        "header": [{"key": "Authorization", "value": "Bearer {{jwt_token}}"}],
         "url": {
           "raw": "{{base_url}}/agents/{{id}}/run",
           "host": ["{{base_url}}"],
