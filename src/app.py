@@ -1,9 +1,17 @@
 import json
+from decimal import Decimal
 import os
 import uuid
 from datetime import datetime
 import boto3
 from boto3.dynamodb.conditions import Key
+
+
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super().default(obj)
 
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(os.environ["AGENTS_TABLE"])
@@ -12,7 +20,7 @@ def response(status, body):
     return {
         "statusCode": status,
         "headers": {"Content-Type": "application/json"},
-        "body": json.dumps(body),
+        "body": json.dumps(body, cls=DecimalEncoder),
     }
 
 def lambda_handler(event, context):
