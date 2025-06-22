@@ -14,6 +14,10 @@ Resources:
             UserPoolArn: !GetAtt AuthUserPool.Arn
             Identity:
               Header: Authorization
+      Cors:
+        AllowOrigin: "'http://localhost:5173'"
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
 
   AgentApiFunction:
     Type: AWS::Serverless::Function
